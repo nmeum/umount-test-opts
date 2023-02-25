@@ -94,15 +94,16 @@ static inline const char *startswith(const char *s, const char *prefix)
 }
 
 /* caller guarantees n > 0 */
-static inline void xstrncpy(char *dest, const char *src, size_t n)
+static int xstrncpy(char *dest, const char *src, size_t n)
 {
 	size_t len = src ? strlen(src) : 0;
 
 	if (!len)
-		return;
+		return 1;
 	len = min(len, n - 1);
 	memcpy(dest, src, len);
 	dest[len] = 0;
+	return 0;
 }
 
 /*
@@ -238,9 +239,11 @@ int mnt_match_options(const char *optstr, const char *pattern)
 		else if ((no = (startswith(name, "no") != NULL)))
 			name += 2, namesz -= 2;
 
-		xstrncpy(buf, name, namesz + 1);
+		if (xstrncpy(buf, name, namesz + 1)) {
+			free(buf);
+			buf = NULL;
+		}
 
-		buf = NULL;
 		rc = mnt_optstr_get_option(optstr, buf, &val, &sz);
 
 		/* check also value (if the pattern is "foo=value") */
