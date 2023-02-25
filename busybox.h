@@ -4,7 +4,7 @@ static int fsopt_matches(const char *opts_list, const char *opt, size_t optlen)
 {
 	int match = 1;
 
-	if (optlen > 2 && opt[0] == 'n' && opt[1] == 'o') {
+	if (optlen >= 2 && opt[0] == 'n' && opt[1] == 'o') {
 		match--;
 		opt += 2; optlen -= 2;
 	}

@@ -23,7 +23,7 @@ This is a well-known idea which is already mentioned in the [original KLEE paper
 
 This repository uses the KLEE [Docker](https://www.docker.io/) image, to use this image run:
 
-    $ docker build -t klee-umount
+    $ docker build -t klee-umount .
     $ docker run -it klee-umount
 
 Within the container run the following commands:
