@@ -9,6 +9,9 @@ static int fsopt_matches(const char *opts_list, const char *opt, size_t optlen)
 		opt += 2; optlen -= 2;
 	}
 
+	if (optlen == 0)
+		return 0;
+
 	while (1) {
 		if (strncmp(opts_list, opt, optlen) == 0) {
 			const char *after_opt = opts_list + optlen;
