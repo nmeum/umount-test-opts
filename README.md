@@ -36,5 +36,4 @@ This will execute the code with KLEE.
 ## Limitations
 
 * The equivalence checked is only performed for fixed-size strings of length `N`.
-* The input is heavily constrained since util-linux returns wild values otherwise.
-  For example, util-linux is of the opinion that empty mount options match the pattern `"`.
+* The input is heavily constrained since the BusyBox implementation does, for example, not support disabling the "no" interpretation using a "+" prefix.
