@@ -18,6 +18,8 @@ The setup provided here uses [symbolic execution](https://en.wikipedia.org/wiki/
     assert(mnt_match_options(options, pattern) == fsopts_matches(options, pattern));
 
 This is a well-known idea which is already mentioned in the [original KLEE paper](https://www.usenix.org/legacy/events/osdi08/tech/full_papers/cadar/cadar.pdf) (Section 5.5).
+For two 8 byte inputs KLEE finds 313153 execution paths for this assertion under the constraints mentioned below.
+On all of these execution paths the assertion holds.
 
 ## Usage
 
