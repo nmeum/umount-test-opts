@@ -239,6 +239,11 @@ int mnt_match_options(const char *optstr, const char *pattern)
 		else if ((no = (startswith(name, "no") != NULL)))
 			name += 2, namesz -= 2;
 
+		/* Intentionally reject empty names like ",,," to
+		 * exclude these edge cases from equivalence checks. */
+		if (namesz == 0)
+			return 0;
+
 		if (xstrncpy(buf, name, namesz + 1)) {
 			free(buf);
 			buf = NULL;
