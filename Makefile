@@ -8,8 +8,6 @@ CPPFLAGS += -I$(KLEE_INCLUDE)
 CFLAGS += -g -O0 -Xclang -disable-O0-optnone
 
 main.bc: main.c
-main.c: util-linux.h busybox.h
-
 # Binary for replying generated test inputs (for debugging etc.).
 # See: https://klee.github.io/tutorials/testing-function/#replaying-a-test-case
 main: main.c
@@ -20,6 +18,8 @@ main: main.c
 
 sim: main.bc
 	klee --solver-backend=z3 \
+		--optimize \
+		--max-memory=$(shell expr 1024 \* 1024 \* 1024) \
 		--exit-on-error \
 		--libc=uclibc \
 		--posix-runtime \
