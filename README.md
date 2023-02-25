@@ -10,6 +10,7 @@ The function which performs this comparison is called [`mnt_match_options()`](ht
 Vanilla BusyBox does not provide this feature but I have written a patch which [adds this feature to Busybox](http://lists.busybox.net/pipermail/busybox/2022-June/089769.html).
 The corresponding function is called `fsopts_matches` in my patch.
 This is an attempt to check if my BusyBox implementation of this feature is "correct".
+This setup has found one undefined behavior bug in util-linux and two functional errors in my BusyBox patch.
 
 ## Setup
 
