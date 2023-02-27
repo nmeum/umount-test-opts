@@ -94,16 +94,15 @@ static inline const char *startswith(const char *s, const char *prefix)
 }
 
 /* caller guarantees n > 0 */
-static int xstrncpy(char *dest, const char *src, size_t n)
+static void xstrncpy(char *dest, const char *src, size_t n)
 {
 	size_t len = src ? strlen(src) : 0;
 
 	if (!len)
-		return 1;
+		return;
 	len = min(len, n - 1);
 	memcpy(dest, src, len);
 	dest[len] = 0;
-	return 0;
 }
 
 /*
@@ -141,6 +140,8 @@ static int mnt_optstr_locate_option(char *optstr, const char *name,
 	assert(name);
 
 	namesz = strlen(name);
+	if (!namesz)
+		return 1;
 
 	do {
 		rc = ul_optstr_next(&optstr, &n, &nsz,
@@ -213,17 +214,15 @@ static int mnt_optstr_next_option(char **optstr, char **name, size_t *namesz,
 int mnt_match_options(const char *optstr, const char *pattern)
 {
 	char *name, *pat = (char *) pattern;
-	char *buf, *patval;
+	char *buf = NULL, *patval;
 	size_t namesz = 0, patvalsz = 0;
 	int match = 1;
 
 	if (!pattern && !optstr)
 		return 1;
+	if (pattern && optstr && !*pattern && !*optstr)
+		return 1;
 	if (!pattern)
-		return 0;
-
-	buf = malloc(strlen(pattern) + 1);
-	if (!buf)
 		return 0;
 
 	/* walk on pattern string
@@ -231,25 +230,34 @@ int mnt_match_options(const char *optstr, const char *pattern)
 	while (match && !mnt_optstr_next_option(&pat, &name, &namesz,
 						&patval, &patvalsz)) {
 		char *val;
-		size_t sz;
+		size_t sz = 0;
 		int no = 0, rc;
 
 		if (*name == '+')
 			name++, namesz--;
-		else if ((no = (startswith(name, "no") != NULL)))
+		else if ((no = (startswith(name, "no") != NULL))) {
 			name += 2, namesz -= 2;
-
-		/* Intentionally reject empty names like ",,," to
-		 * exclude these edge cases from equivalence checks. */
-		if (namesz == 0)
-			return 0;
-
-		if (xstrncpy(buf, name, namesz + 1)) {
-			free(buf);
-			buf = NULL;
+			if (!*name) {
+				match = 0;
+				break;	/* alone "no" keyword is error */
+			}
 		}
 
-		rc = mnt_optstr_get_option(optstr, buf, &val, &sz);
+		if (optstr && *optstr && *name) {
+			if (!buf) {
+				buf = malloc(strlen(pattern) + 1);
+				if (!buf)
+					return 0;
+			}
+
+			xstrncpy(buf, name, namesz + 1);
+			rc = mnt_optstr_get_option(optstr, buf, &val, &sz);
+
+		} else if (!*name) {
+			rc = 0;		/* empty pattern matches */
+		} else {
+			rc = 1;		/* not found in empty string */
+		}
 
 		/* check also value (if the pattern is "foo=value") */
 		if (rc == 0 && patvalsz > 0 &&
@@ -267,7 +275,6 @@ int mnt_match_options(const char *optstr, const char *pattern)
 			match = 0;
 			break;
 		}
-
 	}
 
 	free(buf);
