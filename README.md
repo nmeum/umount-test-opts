@@ -39,5 +39,4 @@ This will execute the code with KLEE.
 ## Limitations
 
 * The equivalence checked is only performed for fixed-size strings of length `N`.
-* The input is heavily constrained since the BusyBox implementation does, for example, not support disabling the "no" interpretation using a "+" prefix.
-* Edge cases like ",,,," are excluded. See cd84f26e3a55d6b38897f21ab1eb49e3ffcce86e.
+* The input is constrained as the BusyBox implementation does not support disabling the "no" interpretation using a "+" prefix.
