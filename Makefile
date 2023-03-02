@@ -7,11 +7,11 @@ KLEE_LIB     = /home/klee/klee_build/lib
 CPPFLAGS += -I$(KLEE_INCLUDE)
 CFLAGS += -g -O0 -Xclang -disable-O0-optnone
 
-main.bc: main.c
+main.bc: main.c busybox.h util-linux.h
 # Binary for replying generated test inputs (for debugging etc.).
 # See: https://klee.github.io/tutorials/testing-function/#replaying-a-test-case
-main: main.c
-	$(GCC) $(CPPFLAGS) -g3 -L$(KLEE_LIB) $< -o $@ -lkleeRuntest
+main: main.c busybox.h util-linux.h
+	$(GCC) $(CPPFLAGS) -g3 -L$(KLEE_LIB) $< -o $@
 
 %.bc: %.c
 	$(CLANG) -emit-llvm -c -o $@ $< $(CPPFLAGS) $(CFLAGS)
