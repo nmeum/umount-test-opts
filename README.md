@@ -39,4 +39,4 @@ This will execute the code with KLEE.
 ## Limitations
 
 * The equivalence checked is only performed for fixed-size strings of length `N`.
-* The input is constrained as the BusyBox implementation does not support disabling the "no" interpretation using a "+" prefix.
+* Support for `key=value` mount options is not implemented in Busybox, hence the input is constrained to `[-,+A-Za-z0-9]`.

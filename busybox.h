@@ -11,6 +11,9 @@ static int fsopt_matches(const char *opts_list, const char *opt, size_t optlen)
 
 	if (optlen == 0)
 		return 0;
+	if (match && optlen > 1 && *opt == '+') {
+		opt++; optlen--;
+	}
 
 	while (1) {
 		if (strncmp(opts_list, opt, optlen) == 0) {

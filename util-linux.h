@@ -233,7 +233,7 @@ int mnt_match_options(const char *optstr, const char *pattern)
 		size_t sz = 0;
 		int no = 0, rc;
 
-		if (*name == '+')
+		if (*name == '+' && namesz > 1)
 			name++, namesz--;
 		else if ((no = (startswith(name, "no") != NULL))) {
 			name += 2, namesz -= 2;
