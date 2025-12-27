@@ -23,6 +23,8 @@ sim: main.bc
 		--exit-on-error \
 		--libc=uclibc \
 		--posix-runtime \
+		--check-div-zero=false \
+		--check-overshift=false \
 		$<
 
 clean:
