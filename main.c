@@ -1,5 +1,4 @@
 #include <assert.h>
-#include <ctype.h>
 #include <string.h>
 #include <stdio.h>
 
@@ -7,6 +6,12 @@
 #include "util-linux.h"
 
 #include <klee/klee.h>
+
+/* locale-indepdent implementation of isalpha from musl libc */
+static int isalpha(int c)
+{
+	return ((unsigned)c|32)-'a' < 26;
+}
 
 int
 main(int argc, char **argv)
