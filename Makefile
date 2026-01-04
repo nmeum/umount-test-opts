@@ -21,7 +21,6 @@ main: main.c busybox.h util-linux.h
 
 sim: main.bc
 	klee --solver-backend=z3 \
-		--optimize \
 		--max-memory=$(shell expr 1024 \* 1024 \* 1024) \
 		--exit-on-error \
 		--libc=uclibc \
