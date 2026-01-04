@@ -1,2 +1,4 @@
 main
 main.bc
+klee-last
+klee-out-*
