@@ -11,8 +11,8 @@
 int
 main(int argc, char **argv)
 {
-	char options[8];
-	char pattern[8];
+	char options[INPUT_SIZE];
+	char pattern[INPUT_SIZE];
 
 	klee_make_symbolic(&options, sizeof(options), "options");
 	for (int i = 0; i < sizeof(options) - 1; i++)
