@@ -27,6 +27,7 @@ sim: main.bc
 		--posix-runtime \
 		--check-div-zero=false \
 		--check-overshift=false \
+		--write-no-tests \
 		$<
 
 clean:
