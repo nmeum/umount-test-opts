@@ -19,9 +19,9 @@ The setup provided here uses [symbolic execution](https://en.wikipedia.org/wiki/
     assert(mnt_match_options(options, pattern) == fsopts_matches(options, pattern));
 
 This is a well-known idea that is already mentioned in the [original KLEE paper](https://www.usenix.org/legacy/events/osdi08/tech/full_papers/cadar/cadar.pdf) (Section 5.5).
-For two 8 byte inputs, KLEE finds 46588712 execution paths for this assertion under the constraints mentioned below.
+For two 7 byte inputs, KLEE finds 70119 execution paths for this assertion under the constraints mentioned below.
 On all of these execution paths, the assertion holds.
-On a AMD Ryzen 5700, this takes about 4 to 5 minutes.
+On an AMD Ryzen 5700, this takes around 4 minutes.
 
 ## Usage
 
@@ -35,7 +35,7 @@ Within the Guix shell run the following commands:
 
 Alternatively, you can also try to use KLEE's [Docker](https://www.docker.io/) image:
 
-    $ docker run --rm -it klee/klee -v $(PWD):/code
+    $ docker run --rm -it klee/klee -v "$(pwd):/code"
 
 Within the container run:
 
@@ -45,5 +45,5 @@ Within the container run:
 ## Limitations
 
 * The equivalence checked is only performed for fixed-size strings of length `N`.
-* Support for `key=value` mount options is not implemented in BusyBox, hence the input is constrained to `[-,+A-Za-z0-9]`.
+* Support for `key=value` mount options is not implemented in BusyBox, hence the input is constrained to `[-,+A-Za-z]`.
 * The inputs always have a length of `INPUT_SIZE` since the aforementioned constraint does not include null terminators.
